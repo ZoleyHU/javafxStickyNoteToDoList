@@ -20,11 +20,11 @@ public class NewNoteController {
     public void addNewNote(ActionEvent actionEvent) {
         String description = this.descriptionTextArea.getText().trim();
         var deadline = this.deadlineDate.getValue();
-        boolean postponableValue = ((RadioButton)this.postponable.getSelectedToggle()).getText().equals("Yes");
+        int postpones = ((RadioButton)this.postponable.getSelectedToggle()).getText().equals("Yes") ? 2 : 0;
         String color = "#"+this.noteColor.getValue().toString().substring(2);
 
         if(checkValidValues(description, deadline)) {
-            StickyNote stickyNote = new NoteDaoImpl().add(new StickyNote(description, postponableValue, deadline, color));
+            StickyNote stickyNote = new NoteDaoImpl().add(new StickyNote(description, postpones, deadline, color));
 
             if (stickyNote == null) {
                 showErrorMessage("Please ensure you are connected to the database and check if your input is correct!");
