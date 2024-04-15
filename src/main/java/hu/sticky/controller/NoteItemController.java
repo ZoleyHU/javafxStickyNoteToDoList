@@ -17,15 +17,19 @@ public class NoteItemController {
     public Label deadlineText;
     public Label postponesText;
     public Button deleteButton;
+    public Button postponeButton;
     private int noteId;
 
     public void setData(StickyNote stickyNote) {
         noteId = stickyNote.getId();
         noteText.setText(stickyNote.getNoteDescription());
-        deadlineText.setText("Deadline: " + stickyNote.getDeadline());
-        postponesText.setText("Remaining postopnes: " + stickyNote.getPostpones());
+        deadlineText.setText(stickyNote.getDeadline().toString());
+        postponesText.setText(Integer.toString(stickyNote.getPostpones()));
         containerVbox.setStyle("-fx-background-color: "+stickyNote.getBackground()+";");
 
+        disablePostponeButton(stickyNote.getPostpones());
+
+        //todo slowly phase out the postponable property, it can be replaced by postpones > 0
         //todo changing font color for better visibility
         //todo adding a black border for better looking notes
     }
@@ -45,6 +49,10 @@ public class NoteItemController {
     public void postpone(ActionEvent actionEvent) {
         //todo postopnes should be an embedded property?
         //todo these methods should be implemented in daoimpl because they communicate with the db?
+    }
+
+    private void disablePostponeButton(int postpones) {
+        if (postpones == 0) postponeButton.setDisable(true);
     }
 
     public void modify(ActionEvent actionEvent) {
