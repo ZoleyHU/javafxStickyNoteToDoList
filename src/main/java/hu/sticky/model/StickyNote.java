@@ -6,24 +6,20 @@ public class StickyNote {
 
     private int id;
     private String noteDescription;
-    private boolean postponable;
     private int postpones;
     private LocalDate deadline;
     private String background;
 
-    public StickyNote(String noteDescription, boolean postponable, LocalDate deadline, String background) {
+    public StickyNote(String noteDescription, int postpones, LocalDate deadline, String background) {
         this.noteDescription = noteDescription;
-        this.postponable = postponable;
+        this.postpones = postpones;
         this.deadline = deadline;
         this.background = background;
-
-        this.postpones = this.postponable ? 2 : 0;
     }
 
-    public StickyNote(int id, String noteDescription, boolean postponable, int postpones, LocalDate deadline, String background) {
+    public StickyNote(int id, String noteDescription, int postpones, LocalDate deadline, String background) {
         this.id = id;
         this.noteDescription = noteDescription;
-        this.postponable = postponable;
         this.postpones = postpones;
         this.deadline = deadline;
         this.background = background;
@@ -36,10 +32,6 @@ public class StickyNote {
 
     public String getNoteDescription() {
         return noteDescription;
-    }
-
-    public boolean isPostponable() {
-        return postponable;
     }
 
     public int getPostpones() {
@@ -61,10 +53,6 @@ public class StickyNote {
 
     public void setNoteDescription(String noteDescription) {
         this.noteDescription = noteDescription;
-    }
-
-    public void setPostponable(boolean postponable) {
-        this.postponable = postponable;
     }
 
     public void setPostpones(int postpones) {

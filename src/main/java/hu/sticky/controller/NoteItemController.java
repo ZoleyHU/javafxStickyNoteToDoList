@@ -29,7 +29,6 @@ public class NoteItemController {
 
         disablePostponeButton(stickyNote.getPostpones());
 
-        //todo slowly phase out the postponable property, it can be replaced by postpones > 0
         //todo changing font color for better visibility
         //todo adding a black border for better looking notes
     }
@@ -39,7 +38,6 @@ public class NoteItemController {
         return new StickyNote(
                 noteId,
                 noteText.getText(),
-                 postpones > 0,
                 postpones,
                 LocalDate.parse(deadlineText.getText().substring(10) ),
                 "#"+containerVbox.getBackground().getFills().get(0).getFill().toString().substring(2)
@@ -60,7 +58,6 @@ public class NoteItemController {
         //todo implement
         System.out.println(stickyNote.getId());
         System.out.println(stickyNote.getDeadline());
-        System.out.println(stickyNote.isPostponable());
         System.out.println(stickyNote.getPostpones());
         System.out.println(stickyNote.getBackground());
     }

@@ -22,7 +22,6 @@ public class NoteDaoImpl implements NoteDao{
                 result.add(new StickyNote(
                         rs.getInt("id"),
                         rs.getString("description"),
-                        rs.getInt("postponable") > 0, //converting integer value to boolean
                         rs.getInt("postpones"),
                         LocalDate.parse(rs.getString("deadline")), //converting string to local date
                         rs.getString("background")
@@ -39,16 +38,15 @@ public class NoteDaoImpl implements NoteDao{
     @Override
     public StickyNote add(StickyNote stickyNote) {
         String path = ConfigHelper.getProperty("db.url");
-        String addSqlCommand = "INSERT INTO StickyNotes (DESCRIPTION, POSTPONABLE, POSTPONES, DEADLINE, BACKGROUND) VALUES (?,?,?,?,?)";
+        String addSqlCommand = "INSERT INTO StickyNotes (DESCRIPTION, POSTPONES, DEADLINE, BACKGROUND) VALUES (?,?,?,?)";
 
         try(Connection c = DriverManager.getConnection(path);
             PreparedStatement stmt = c.prepareStatement(addSqlCommand, Statement.RETURN_GENERATED_KEYS);
         ){
             stmt.setString(1, stickyNote.getNoteDescription());
-            stmt.setBoolean(2, stickyNote.isPostponable());
-            stmt.setInt(3, stickyNote.getPostpones());
-            stmt.setString(4, stickyNote.getDeadline().toString());
-            stmt.setString(5, stickyNote.getBackground());
+            stmt.setInt(2, stickyNote.getPostpones());
+            stmt.setString(3, stickyNote.getDeadline().toString());
+            stmt.setString(4, stickyNote.getBackground());
 
             int affectedRows = stmt.executeUpdate();
             if(affectedRows == 0){
