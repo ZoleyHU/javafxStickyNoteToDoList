@@ -91,4 +91,28 @@ public class NoteDaoImpl implements NoteDao{
     public boolean modify(StickyNote stickyNote) {
         return false;
     }
+
+    @Override
+    public boolean postpone(StickyNote stickyNote) {
+        String path = ConfigHelper.getProperty("db.url");
+        String updateSqlCommand = "UPDATE StickyNotes SET POSTPONES = ? WHERE ID = ?";
+
+        try(Connection c = DriverManager.getConnection(path);
+            PreparedStatement stmt = c.prepareStatement(updateSqlCommand);
+        ){
+            stmt.setInt(1, stickyNote.getPostpones());
+            stmt.setInt(2, stickyNote.getId());
+
+            int affectedRows = stmt.executeUpdate();
+            if(affectedRows == 0){
+                return false;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
 }
