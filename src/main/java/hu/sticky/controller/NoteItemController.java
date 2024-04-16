@@ -34,19 +34,27 @@ public class NoteItemController {
     }
 
     private StickyNote getData() {
-        int postpones = Integer.parseInt(postponesText.getText().substring(postponesText.getText().length()-1));
         return new StickyNote(
                 noteId,
                 noteText.getText(),
-                postpones,
-                LocalDate.parse(deadlineText.getText().substring(10) ),
+                Integer.parseInt(postponesText.getText()),
+                LocalDate.parse(deadlineText.getText()),
                 "#"+containerVbox.getBackground().getFills().get(0).getFill().toString().substring(2)
         );
     }
 
     public void postpone(ActionEvent actionEvent) {
-        //todo postopnes should be an embedded property?
-        //todo these methods should be implemented in daoimpl because they communicate with the db?
+        if (Integer.parseInt(postponesText.getText()) > 0) {
+            StickyNote stickyNote = getData();
+            stickyNote.setPostpones(stickyNote.getPostpones()-1);
+            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1));
+
+            if (new NoteDaoImpl().postpone(stickyNote)) {
+                postponesText.setText(String.valueOf(stickyNote.getPostpones()));
+                deadlineText.setText(stickyNote.getDeadline().toString());
+                disablePostponeButton(stickyNote.getPostpones());
+            }
+        }
     }
 
     private void disablePostponeButton(int postpones) {
