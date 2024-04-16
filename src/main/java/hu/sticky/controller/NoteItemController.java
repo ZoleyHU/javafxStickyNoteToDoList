@@ -34,12 +34,11 @@ public class NoteItemController {
     }
 
     private StickyNote getData() {
-        int postpones = Integer.parseInt(postponesText.getText().substring(postponesText.getText().length()-1));
         return new StickyNote(
                 noteId,
                 noteText.getText(),
-                postpones,
-                LocalDate.parse(deadlineText.getText().substring(10) ),
+                Integer.parseInt(postponesText.getText()),
+                LocalDate.parse(deadlineText.getText()),
                 "#"+containerVbox.getBackground().getFills().get(0).getFill().toString().substring(2)
         );
     }
