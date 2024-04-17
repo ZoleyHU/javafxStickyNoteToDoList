@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="600" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.sticky.controller.ModifyNoteController">
+    <children>
+        <Label text="Modify Note">
+            <font>
+                <Font size="20.0" />
+            </font></Label>
+        <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label text="Text" />
+                <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+            </children>
+            <VBox.margin>
+                <Insets bottom="10.0" top="30.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER" layoutX="10.0" layoutY="169.0" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
+            <children>
+                <Label text="Deadline" />
+                <DatePicker fx:id="deadlineDate" />
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" layoutX="10.0" layoutY="169.0" prefHeight="40.0" prefWidth="200.0" spacing="40.0">
+            <children>
+                <Label text="Note color" />
+                <ColorPicker fx:id="noteColor" />
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#modifyNote" text="Confirm" />
+                <Button mnemonicParsing="false" onAction="#closeModifyNoteForm" text="Cancel" />
+            </children>
+        </HBox>
+    </children>
+</VBox>
