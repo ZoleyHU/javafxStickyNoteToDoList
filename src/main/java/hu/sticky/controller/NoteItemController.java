@@ -53,7 +53,7 @@ public class NoteItemController {
         if (Integer.parseInt(postponesText.getText()) > 0) {
             StickyNote stickyNote = getData();
             stickyNote.setPostpones(stickyNote.getPostpones()-1);
-            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1));
+            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1)); //todo fix, this ist saved in db
 
             if (new NoteDaoImpl().postpone(stickyNote)) {
                 postponesText.setText(String.valueOf(stickyNote.getPostpones()));
@@ -69,6 +69,7 @@ public class NoteItemController {
 
     public void openModifyWindow(ActionEvent actionEvent) {
         try {
+            //todo make the original scene not interactable
             StickyNote stickyNote = getData();
 
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/modifyNote.fxml"));

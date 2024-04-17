@@ -120,7 +120,7 @@ public class NoteDaoImpl implements NoteDao{
     }
 
     @Override
-    public boolean postpone(StickyNote stickyNote) {
+    public boolean postpone(StickyNote stickyNote) {    //todo this is not needed, can be replaced by modify
         String path = ConfigHelper.getProperty("db.url");
         String updateSqlCommand = "UPDATE StickyNotes SET POSTPONES = ? WHERE ID = ?";
 
