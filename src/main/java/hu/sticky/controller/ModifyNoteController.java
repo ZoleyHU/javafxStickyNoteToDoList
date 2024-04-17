@@ -3,10 +3,12 @@ package hu.sticky.controller;
 import hu.sticky.dao.NoteDaoImpl;
 import hu.sticky.model.StickyNote;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,14 +21,22 @@ public class ModifyNoteController {
     public void modifyNote(ActionEvent actionEvent) {
         StickyNote stickyNote = getData();
         if (new NoteDaoImpl().modify(stickyNote)) {
+            //todo check if binded properties work, so events become unnecessary
             //todo feedback to the user about successful modification
-            //todo close window
             //todo emit event, to update the notes on screen
+
+            closeWindow(actionEvent);
         }
     }
 
     public void closeModifyNoteForm(ActionEvent actionEvent) throws IOException {
-        //todo close window
+        closeWindow(actionEvent);
+    }
+
+    private void closeWindow(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     public void setData(StickyNote stickyNote) {
