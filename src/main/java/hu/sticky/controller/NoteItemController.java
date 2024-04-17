@@ -1,5 +1,6 @@
 package hu.sticky.controller;
 
+import hu.sticky.App;
 import hu.sticky.dao.NoteDaoImpl;
 import hu.sticky.event.NoteEvent;
 import hu.sticky.model.StickyNote;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class NoteItemController {
@@ -61,13 +63,15 @@ public class NoteItemController {
         if (postpones == 0) postponeButton.setDisable(true);
     }
 
-    public void modify(ActionEvent actionEvent) {
-        StickyNote stickyNote = getData();
-        //todo implement
-        System.out.println(stickyNote.getId());
-        System.out.println(stickyNote.getDeadline());
-        System.out.println(stickyNote.getPostpones());
-        System.out.println(stickyNote.getBackground());
+    public void openModifyWindow(ActionEvent actionEvent) {
+        try {
+            StickyNote stickyNote = getData();
+            App.setRoot("view/modifyNote");
+
+            //todo call method
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(ActionEvent actionEvent) {

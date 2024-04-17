@@ -21,7 +21,7 @@
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="100.0" spacing="5.0">
          <children>
             <Button fx:id="postponeButton" mnemonicParsing="false" onAction="#postpone" text="Postpone" />
-            <Button mnemonicParsing="false" onAction="#modify" text="Modify" />
+            <Button mnemonicParsing="false" onAction="#openModifyWindow" text="Modify" />
             <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete" />
          </children>
       </HBox>
