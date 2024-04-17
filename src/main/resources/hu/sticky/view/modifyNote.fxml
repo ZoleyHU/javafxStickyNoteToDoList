@@ -20,12 +20,6 @@
                 <Insets bottom="10.0" top="30.0" />
             </VBox.margin>
         </HBox>
-        <HBox alignment="CENTER" layoutX="10.0" layoutY="169.0" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
-            <children>
-                <Label text="Deadline" />
-                <DatePicker fx:id="deadlineDate" />
-            </children>
-        </HBox>
         <HBox alignment="CENTER" layoutX="10.0" layoutY="169.0" prefHeight="40.0" prefWidth="200.0" spacing="40.0">
             <children>
                 <Label text="Note color" />
@@ -38,5 +32,6 @@
                 <Button mnemonicParsing="false" onAction="#closeModifyNoteForm" text="Cancel" />
             </children>
         </HBox>
+      <Label fx:id="hiddenLabel" text="otherProperties" visible="false" />
     </children>
 </VBox>
