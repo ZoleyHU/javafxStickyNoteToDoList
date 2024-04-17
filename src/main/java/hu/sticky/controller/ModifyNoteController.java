@@ -22,14 +22,15 @@ public class ModifyNoteController {
         StickyNote stickyNote = getData();
         if (new NoteDaoImpl().modify(stickyNote)) {
             //todo check if binded properties work, so events become unnecessary
-            //todo feedback to the user about successful modification
             //todo emit event, to update the notes on screen
 
             closeWindow(actionEvent);
+        } else {
+
         }
     }
 
-    public void closeModifyNoteForm(ActionEvent actionEvent) throws IOException {
+    public void closeModifyNoteForm(ActionEvent actionEvent) {
         closeWindow(actionEvent);
     }
 
