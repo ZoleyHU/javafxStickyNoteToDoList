@@ -1,14 +1,20 @@
 package hu.sticky.controller;
 
+import hu.sticky.App;
 import hu.sticky.dao.NoteDaoImpl;
 import hu.sticky.event.NoteEvent;
 import hu.sticky.model.StickyNote;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class NoteItemController {
@@ -47,7 +53,7 @@ public class NoteItemController {
         if (Integer.parseInt(postponesText.getText()) > 0) {
             StickyNote stickyNote = getData();
             stickyNote.setPostpones(stickyNote.getPostpones()-1);
-            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1));
+            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1)); //todo fix, this ist saved in db
 
             if (new NoteDaoImpl().postpone(stickyNote)) {
                 postponesText.setText(String.valueOf(stickyNote.getPostpones()));
@@ -61,13 +67,26 @@ public class NoteItemController {
         if (postpones == 0) postponeButton.setDisable(true);
     }
 
-    public void modify(ActionEvent actionEvent) {
-        StickyNote stickyNote = getData();
-        //todo implement
-        System.out.println(stickyNote.getId());
-        System.out.println(stickyNote.getDeadline());
-        System.out.println(stickyNote.getPostpones());
-        System.out.println(stickyNote.getBackground());
+    public void openModifyWindow(ActionEvent actionEvent) {
+        try {
+            //todo make the original scene not interactable
+            StickyNote stickyNote = getData();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/modifyNote.fxml"));
+            Parent root = fxmlLoader.load();
+
+            ModifyNoteController modifyController = fxmlLoader.getController();
+
+            modifyController.setData(stickyNote);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Modify Note");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(ActionEvent actionEvent) {
