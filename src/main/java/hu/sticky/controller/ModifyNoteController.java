@@ -4,12 +4,10 @@ import hu.sticky.dao.NoteDaoImpl;
 import hu.sticky.model.StickyNote;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.time.LocalDate;
 
@@ -17,15 +15,13 @@ public class ModifyNoteController {
     public TextArea descriptionTextArea;
     public ColorPicker noteColor;
     public Label hiddenLabel;
+    public Button confirmButton;
 
     public void modifyNote(ActionEvent actionEvent) {
         StickyNote stickyNote = getData();
         if (isDescriptionNotEmpty(stickyNote.getNoteDescription())) {
             if (new NoteDaoImpl().modify(stickyNote)) {
-                //todo check if binded properties work, so events become unnecessary
-                //todo emit event, to update the notes on screen
-
-                closeWindow(actionEvent);
+                closeWindow(actionEvent, true);
                 return;
             }
         }
@@ -33,12 +29,15 @@ public class ModifyNoteController {
     }
 
     public void closeModifyNoteForm(ActionEvent actionEvent) {
-        closeWindow(actionEvent);
+        closeWindow(actionEvent, false);
     }
 
-    private void closeWindow(ActionEvent actionEvent) {
+    private void closeWindow(ActionEvent actionEvent, boolean modified) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
+
+        if (modified) confirmButton.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+
         stage.close();
     }
 
@@ -64,7 +63,7 @@ public class ModifyNoteController {
         );
     }
 
-    private StickyNote getData() {
+    protected StickyNote getData() {
         String[] hiddenProperties = hiddenLabel.getText().split(";");
         return new StickyNote(
                 Integer.parseInt(hiddenProperties[0]),
