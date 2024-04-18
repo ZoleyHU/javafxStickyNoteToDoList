@@ -82,8 +82,12 @@ public class NoteItemController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Modify Note");
-            stage.show();
 
+            stage.setOnCloseRequest(e -> {
+                this.setData(modifyController.getData());
+            });
+
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
