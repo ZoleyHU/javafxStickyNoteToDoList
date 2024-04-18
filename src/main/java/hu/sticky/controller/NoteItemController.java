@@ -53,9 +53,9 @@ public class NoteItemController {
         if (Integer.parseInt(postponesText.getText()) > 0) {
             StickyNote stickyNote = getData();
             stickyNote.setPostpones(stickyNote.getPostpones()-1);
-            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1)); //todo fix, this ist saved in db
+            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1));
 
-            if (new NoteDaoImpl().postpone(stickyNote)) {
+            if (new NoteDaoImpl().modify(stickyNote)) {
                 postponesText.setText(String.valueOf(stickyNote.getPostpones()));
                 deadlineText.setText(stickyNote.getDeadline().toString());
                 disablePostponeButton(stickyNote.getPostpones());
