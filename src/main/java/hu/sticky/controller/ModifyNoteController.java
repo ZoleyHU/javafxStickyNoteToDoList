@@ -1,10 +1,12 @@
 package hu.sticky.controller;
 
 import hu.sticky.dao.NoteDaoImpl;
+import hu.sticky.event.NoteEvent;
 import hu.sticky.model.StickyNote;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -36,7 +38,9 @@ public class ModifyNoteController {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
 
-        if (modified) confirmButton.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        if (modified) confirmButton.fireEvent(new NoteEvent(NoteEvent.NOTE_MODIFY, new VBox()));
+
+        confirmButton.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 
         stage.close();
     }
