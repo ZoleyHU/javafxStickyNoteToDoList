@@ -6,6 +6,7 @@ import hu.sticky.event.NoteEvent;
 import hu.sticky.model.StickyNote;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -69,7 +70,6 @@ public class NoteItemController {
 
     public void openModifyWindow(ActionEvent actionEvent) {
         try {
-            //todo make the original scene not interactable
             StickyNote stickyNote = getData();
 
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/modifyNote.fxml"));
@@ -79,18 +79,39 @@ public class NoteItemController {
 
             modifyController.setData(stickyNote);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Modify Note");
-
-            stage.setOnCloseRequest(e -> {
-                this.setData(modifyController.getData());
-            });
+            Stage stage = createStage(actionEvent, root, modifyController);
 
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Stage createStage(ActionEvent actionEvent, Parent root, ModifyNoteController modifyController) {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Modify Note");
+
+        Stage parentStage = getParentStage(actionEvent);
+
+        stage.setOnCloseRequest(event -> {
+            parentStage.show();
+        });
+
+        stage.setOnShowing(event -> {
+            parentStage.hide();
+        });
+
+        stage.addEventFilter(NoteEvent.NOTE_MODIFY, event -> {
+            this.setData(modifyController.getData());
+        });
+
+        return stage;
+    }
+
+    private Stage getParentStage(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        return (Stage) source.getScene().getWindow();
     }
 
     public void delete(ActionEvent actionEvent) {
