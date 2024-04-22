@@ -12,7 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,48 +21,79 @@ import java.time.LocalDate;
 
 public class NoteItemController {
     public VBox containerVbox;
-    public Label noteText;
-    public Label deadlineText;
-    public Label postponesText;
+    public Label noteLabel;
+    public Label deadlineLabel;
+    public Label postponesLabel;
     public Button deleteButton;
     public Button postponeButton;
+    public Label deadlineText;
+    public Label postponesText;
+    public Button modifyButton;
     private int noteId;
 
     public void setData(StickyNote stickyNote) {
         noteId = stickyNote.getId();
-        noteText.setText(stickyNote.getNoteDescription());
-        deadlineText.setText(stickyNote.getDeadline().toString());
-        postponesText.setText(Integer.toString(stickyNote.getPostpones()));
+        noteLabel.setText(stickyNote.getNoteDescription());
+        deadlineLabel.setText(stickyNote.getDeadline().toString());
+        postponesLabel.setText(Integer.toString(stickyNote.getPostpones()));
         containerVbox.setStyle("-fx-background-color: "+stickyNote.getBackground()+";");
 
-        disablePostponeButton(stickyNote.getPostpones());
+        containerVbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        //todo changing font color for better visibility
-        //todo adding a black border for better looking notes
+        setFontColors(stickyNote);
+        disablePostponeButton(stickyNote.getPostpones());
+        disableModifyButton(stickyNote);
+
+        //todo StickyNote export fix
+    }
+
+    private void disableModifyButton(StickyNote stickyNote) {
+        if (stickyNote.getDeadline().isBefore(LocalDate.now())) {
+            modifyButton.setDisable(true);
+            deadlineLabel.setStyle("-fx-text-fill: " + getOptimalFontColor(stickyNote.getBackground())+";"+
+                    "-fx-font-weight: bold;" +
+                    "-fx-underline: true;");
+        }
+        else {
+            modifyButton.setDisable(false);
+        }
     }
 
     private StickyNote getData() {
         return new StickyNote(
                 noteId,
-                noteText.getText(),
-                Integer.parseInt(postponesText.getText()),
-                LocalDate.parse(deadlineText.getText()),
+                noteLabel.getText(),
+                Integer.parseInt(postponesLabel.getText()),
+                LocalDate.parse(deadlineLabel.getText()),
                 "#"+containerVbox.getBackground().getFills().get(0).getFill().toString().substring(2)
         );
     }
 
     public void postpone(ActionEvent actionEvent) {
-        if (Integer.parseInt(postponesText.getText()) > 0) {
+        if (Integer.parseInt(postponesLabel.getText()) > 0) {
             StickyNote stickyNote = getData();
             stickyNote.setPostpones(stickyNote.getPostpones()-1);
-            stickyNote.setDeadline(LocalDate.parse(deadlineText.getText()).plusWeeks(1));
+            stickyNote.setDeadline(LocalDate.parse(deadlineLabel.getText()).plusWeeks(1));
 
             if (new NoteDaoImpl().modify(stickyNote)) {
-                postponesText.setText(String.valueOf(stickyNote.getPostpones()));
-                deadlineText.setText(stickyNote.getDeadline().toString());
+                postponesLabel.setText(String.valueOf(stickyNote.getPostpones()));
+                deadlineLabel.setText(stickyNote.getDeadline().toString());
                 disablePostponeButton(stickyNote.getPostpones());
+                disableModifyButton(stickyNote);
             }
         }
+    }
+
+    private String getOptimalFontColor(String backgroundColor) {
+        return "#" + Color.web(backgroundColor).invert().toString().substring(2);
+    }
+
+    private void setFontColors(StickyNote stickyNote) {
+        noteLabel.setStyle("-fx-text-fill: " + getOptimalFontColor(stickyNote.getBackground())+";");
+        deadlineText.setStyle("-fx-text-fill: " + getOptimalFontColor(stickyNote.getBackground())+";");
+        deadlineLabel.setStyle("-fx-text-fill: " + getOptimalFontColor(stickyNote.getBackground())+";");
+        postponesText.setStyle("-fx-text-fill: " + getOptimalFontColor(stickyNote.getBackground())+";");
+        postponesLabel.setStyle("-fx-text-fill: " + getOptimalFontColor(stickyNote.getBackground())+";");
     }
 
     private void disablePostponeButton(int postpones) {

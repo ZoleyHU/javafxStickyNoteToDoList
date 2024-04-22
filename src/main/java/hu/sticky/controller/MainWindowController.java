@@ -17,7 +17,7 @@ import javafx.scene.layout.*;
 
 public class MainWindowController implements Initializable{
 
-    public FlowPane flow;
+    public FlowPane containerFlowPane;
 
     @FXML
     public void openNewNoteForm(ActionEvent actionEvent) throws IOException{
@@ -26,7 +26,7 @@ public class MainWindowController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        flow.addEventFilter(NoteEvent.NOTE_DELETE, this::handleNoteEvent);
+        containerFlowPane.addEventFilter(NoteEvent.NOTE_DELETE, this::handleNoteEvent);
 
         try {
             List<StickyNote> notes = new NoteDaoImpl().getNotes();
@@ -38,7 +38,7 @@ public class MainWindowController implements Initializable{
                 NoteItemController noteItemController = fxmlLoader.getController();
                 noteItemController.setData(note);
 
-                flow.getChildren().add(vbox);
+                containerFlowPane.getChildren().add(vbox);
             }
 
         } catch (IOException e) {
@@ -47,6 +47,6 @@ public class MainWindowController implements Initializable{
     }
 
     private void handleNoteEvent(NoteEvent event) {
-        flow.getChildren().remove(event.getDeletableVbox());
+        containerFlowPane.getChildren().remove(event.getDeletableVbox());
     }
 }
