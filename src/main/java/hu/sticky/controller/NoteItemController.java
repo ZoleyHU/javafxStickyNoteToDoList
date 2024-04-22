@@ -52,6 +52,9 @@ public class NoteItemController {
                     "-fx-font-weight: bold;" +
                     "-fx-underline: true;");
         }
+        else {
+            modifyButton.setDisable(false);
+        }
     }
 
     private StickyNote getData() {
