@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -38,11 +38,13 @@ public class NoteItemController {
         postponesLabel.setText(Integer.toString(stickyNote.getPostpones()));
         containerVbox.setStyle("-fx-background-color: "+stickyNote.getBackground()+";");
 
+        containerVbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
         setFontColors(stickyNote);
         disablePostponeButton(stickyNote.getPostpones());
         disableModifyButton(stickyNote);
-        //todo Stickynote export fix
-        //todo adding a black border for better looking notes
+
+        //todo StickyNote export fix
     }
 
     private void disableModifyButton(StickyNote stickyNote) {
