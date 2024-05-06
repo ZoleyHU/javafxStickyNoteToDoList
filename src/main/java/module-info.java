@@ -7,4 +7,5 @@ module hu.sticky {
     exports hu.sticky;
     exports hu.sticky.controller;
     opens hu.sticky.controller to javafx.fxml;
+    exports hu.sticky.model;
 }
