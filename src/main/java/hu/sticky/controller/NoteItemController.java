@@ -43,8 +43,6 @@ public class NoteItemController {
         setFontColors(stickyNote);
         disablePostponeButton(stickyNote.getPostpones());
         disableModifyButton(stickyNote);
-
-        //todo StickyNote export fix
     }
 
     private void disableModifyButton(StickyNote stickyNote) {
